@@ -22,13 +22,42 @@ jobs:
       run: |
         pip install -r requirements.txt
 
+    # ===============================
+    # 🥇 Secret Leak Detection
+    # ===============================
+    - name: Run Secret Scan
+      run: |
+        echo "=== Running Secret Scan ==="
+        python secret_scan.py
+
+    # ===============================
+    # 🥈 Dependency Vulnerability Scan (Trivy)
+    # ===============================
+    - name: Install Trivy
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+        echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
+        sudo apt-get update
+        sudo apt-get install -y trivy
+
+    - name: Run Dependency Vulnerability Scan
+      run: |
+        echo "=== Running Trivy Scan ==="
+        trivy fs .
+
+    # ===============================
     # 🛡️ Threat Intelligence Scan
+    # ===============================
     - name: Run Threat Intelligence Scan
       run: |
         echo "=== Running Threat Intelligence Scan ==="
         python threat_intel/threat_check.py
 
-    # 🟢 This step runs ONLY if previous step succeeds
+    # ===============================
+    # ✅ Final Status
+    # ===============================
     - name: Build Completed
       run: |
         echo "✅ Build completed successfully — SAFE"
