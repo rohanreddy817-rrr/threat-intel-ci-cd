@@ -6,12 +6,12 @@ import os
 # 🔐 AlienVault OTX Configuration
 # ==============================
 
-API_KEY = "DUMMY_KEY"
+OTX_KEY = "DUMMY_KEY"
 OTX_URL = "https://otx.alienvault.com/api/v1/indicators/IPv4/{}/general"
 
 
 def check_ip(ip):
-    headers = {"X-OTX-API-KEY": API_KEY}
+    headers = {"X-OTX-API-KEY": OTX_KEY}
     r = requests.get(OTX_URL.format(ip), headers=headers, timeout=5)
 
     if r.status_code == 200:
