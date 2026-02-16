@@ -22,11 +22,13 @@ jobs:
       run: |
         pip install -r requirements.txt
 
+    # 🛡️ Threat Intelligence Scan
     - name: Run Threat Intelligence Scan
       run: |
-        echo "Running Threat Intelligence Scan..."
+        echo "=== Running Threat Intelligence Scan ==="
         python threat_intel/threat_check.py
 
+    # 🟢 This step runs ONLY if previous step succeeds
     - name: Build Completed
       run: |
-        echo "Build completed successfully"
+        echo "✅ Build completed successfully — SAFE"

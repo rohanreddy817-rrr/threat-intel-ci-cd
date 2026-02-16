@@ -26,3 +26,35 @@ for ioc in iocs:
 
 print("[+] No malicious indicators found")
 
+import os
+
+print("\n=== Local IOC File Scan Started ===")
+
+malicious_found = False
+
+with open("malicious_iocs.txt") as f:
+    iocs = [line.strip() for line in f if line.strip()]
+
+for root, _, files in os.walk("."):
+    for file in files:
+        path = os.path.join(root, file)
+
+        if ".git" in path:
+            continue
+
+        try:
+            with open(path, errors="ignore") as current:
+                content = current.read()
+
+                for ioc in iocs:
+                    if ioc in content:
+                        print(f"[!] Malicious indicator found in file: {file}")
+                        malicious_found = True
+        except:
+            pass
+
+if malicious_found:
+    print("[X] Threat detected in project files — stopping pipeline")
+    sys.exit(1)
+else:
+    print("[+] No malicious indicators in project files")

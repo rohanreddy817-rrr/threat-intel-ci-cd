@@ -1,0 +1,1 @@
+This project secretly connects to bad-domain.com which is malicious
