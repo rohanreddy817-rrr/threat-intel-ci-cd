@@ -56,6 +56,37 @@ jobs:
         python threat_intel/threat_check.py
 
     # ===============================
+    # 📄 Dynamic Security Report
+    # ===============================
+    - name: Generate Security Report
+      if: always()
+      run: |
+        echo "=== Generating Security Report ==="
+
+        STATUS="${{ job.status }}"
+
+        echo "===== SECURITY SCAN REPORT =====" > security_report.txt
+        echo "Repository: threat-intel-ci-cd" >> security_report.txt
+        echo "Date: $(date)" >> security_report.txt
+        echo "" >> security_report.txt
+
+        if [ "$STATUS" = "success" ]; then
+          echo "Result: SAFE — No threats detected" >> security_report.txt
+        else
+          echo "Result: UNSAFE — Threats detected" >> security_report.txt
+        fi
+
+        echo "" >> security_report.txt
+        echo "Checks Performed:" >> security_report.txt
+        echo "- Secret Leak Scan" >> security_report.txt
+        echo "- Dependency Vulnerability Scan (Trivy)" >> security_report.txt
+        echo "- Threat Intelligence Scan" >> security_report.txt
+
+        echo "================================" >> security_report.txt
+
+        cat security_report.txt
+
+    # ===============================
     # ✅ Final Status
     # ===============================
     - name: Build Completed
