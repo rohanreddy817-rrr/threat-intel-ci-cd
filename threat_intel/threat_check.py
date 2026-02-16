@@ -6,7 +6,7 @@ import os
 # 🔐 AlienVault OTX Configuration
 # ==============================
 
-API_KEY = "fc7733f250e3291f51a393ce720d22081238668377a19688f85355d2a60187cd"
+API_KEY = "DUMMY_KEY"
 OTX_URL = "https://otx.alienvault.com/api/v1/indicators/IPv4/{}/general"
 
 
